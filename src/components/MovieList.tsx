@@ -5,7 +5,7 @@ import MovieCard from './MovieCard';
 
 export default function MovieList({title, category}) {
   const [apiData, setApiData] = useState([]);
-  const API_KEY = '38643af836173e58a6e567bb33b8401b';
+  const API_KEY = '38643af836173e58a6e567bb33b8401b'; // todo: store in env file
 
   useEffect(() => {
     const getData = async () => {
