@@ -1,7 +1,21 @@
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {useMovieContext} from '../contexts/MovieContext';
 
 export default function MovieDetails({route}) {
-  const {movie} = route.params; // ✅ Get movie data
+  // Get movie object from route params
+  const {movie} = route.params;
+
+  const {addToFavorites, removeFromFavorites, isFavorite} = useMovieContext();
+
+  const favorite = isFavorite(movie.id);
+
+  const handleFavoriteToggle = () => {
+    if (favorite) {
+      removeFromFavorites(movie.id);
+    } else {
+      addToFavorites(movie);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -9,6 +23,13 @@ export default function MovieDetails({route}) {
         source={{uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`}}
         style={styles.image}
       />
+      <TouchableOpacity
+        onPress={handleFavoriteToggle}
+        style={styles.favoriteButton}>
+        <Text style={styles.favoriteText}>
+          {favorite ? '❤️ Remove from Favorites' : '🤍 Add to Favorites'}
+        </Text>
+      </TouchableOpacity>
       <Text style={styles.title}>{movie.original_title}</Text>
       <Text style={styles.description}>{movie.overview}</Text>
     </View>
@@ -36,5 +57,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'gray',
     marginTop: 10,
+  },
+  favoriteButton: {
+    marginTop: 20,
+    backgroundColor: '#ff3d47',
+    padding: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  favoriteText: {
+    fontSize: 18,
+    color: 'white',
   },
 });
