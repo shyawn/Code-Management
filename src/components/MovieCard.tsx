@@ -12,6 +12,7 @@ export default function MovieCard({movie}) {
     navigation.navigate('MovieDetails', {movie});
   };
 
+  //   Used to toggle favorite state of movie
   const handleFavoritePress = () => {
     favorite ? removeFromFavorites(movie.id) : addToFavorites(movie);
   };

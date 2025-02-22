@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import axios from 'axios';
 import MovieCard from './MovieCard';
 
@@ -11,7 +11,7 @@ export default function MovieList({title, category}) {
     const getData = async () => {
       try {
         const res = await axios.get(
-          `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}`,
+          `https://api.themoviedb.org/3/movie/${category}?api_key=${API_KEY}`,
         );
         setApiData(res.data.results);
       } catch (err) {
@@ -24,7 +24,7 @@ export default function MovieList({title, category}) {
 
   return (
     <View>
-      <Text>Popular Movies</Text>
+      <Text style={styles.header}>{title}</Text>
       {apiData.length > 0 ? (
         apiData.map((card, idx) => <MovieCard movie={card} key={idx} />)
       ) : (
@@ -33,3 +33,10 @@ export default function MovieList({title, category}) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  header: {
+    fontSize: 30,
+    fontWeight: 700,
+  },
+});
