@@ -1,11 +1,19 @@
-import {useNavigation} from '@react-navigation/native';
+import {useMovieContext} from '../contexts/MovieContext';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 export default function MovieCard({movie}) {
   const navigation = useNavigation();
 
+  const {isFavorite, addToFavorites, removeFromFavorites} = useMovieContext();
+  const favorite = isFavorite(movie.id);
+
   const handlePress = () => {
     navigation.navigate('MovieDetails', {movie});
+  };
+
+  const handleFavoritePress = () => {
+    favorite ? removeFromFavorites(movie.id) : addToFavorites(movie);
   };
 
   return (
@@ -17,8 +25,12 @@ export default function MovieCard({movie}) {
         style={styles.image}
       />
       <View>
-        <TouchableOpacity>
-          <Text>♥</Text>
+        <TouchableOpacity
+          onPress={handleFavoritePress}
+          style={styles.favoriteButton}>
+          <Text style={{fontSize: 24, color: favorite ? 'red' : 'white'}}>
+            {favorite ? '❤️' : '🤍'}
+          </Text>
         </TouchableOpacity>
         <Text style={styles.cardText}>{movie.original_title}</Text>
       </View>
@@ -43,5 +55,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 200,
     borderRadius: 8,
+  },
+  favoriteButton: {
+    alignSelf: 'center',
+    marginTop: 5,
   },
 });
