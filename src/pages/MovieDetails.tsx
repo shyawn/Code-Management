@@ -1,11 +1,21 @@
-import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import {useMovieContext} from '../contexts/MovieContext';
+import {useState} from 'react';
 
 export default function MovieDetails({route}) {
   // Get movie object from route params
   const {movie} = route.params;
 
   const {addToFavorites, removeFromFavorites, isFavorite} = useMovieContext();
+
+  const [loading, setLoading] = useState(true);
 
   const favorite = isFavorite(movie.id);
 
@@ -19,9 +29,16 @@ export default function MovieDetails({route}) {
 
   return (
     <View style={styles.container}>
+      {loading && (
+        <Text>Loading...</Text> // Show loading text when fetching movie data
+      )}
       <Image
-        source={{uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`}}
+        source={{
+          uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+        }}
         style={styles.image}
+        onLoad={() => setLoading(false)}
+        onError={() => setLoading(false)}
       />
       <TouchableOpacity
         onPress={handleFavoriteToggle}
