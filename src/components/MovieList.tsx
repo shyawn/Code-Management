@@ -2,11 +2,12 @@ import {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import axios from 'axios';
 import MovieCard from './MovieCard';
+import Config from 'react-native-config';
 
 export default function MovieList({title, category}) {
   const [apiData, setApiData] = useState([]);
-  const API_KEY = '38643af836173e58a6e567bb33b8401b'; // todo: store in env file
-
+  Config.API_KEY; //  '38643af836173e58a6e567bb33b8401b';   // Attempt to use native config, but not working
+  // const API_KEY = '38643af836173e58a6e567bb33b8401b';
   useEffect(() => {
     const getData = async () => {
       try {
